@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include <cassert>
 
 using namespace std;
 
@@ -65,7 +67,8 @@ class ArtCollection {
 
 public:
     // method signature (specifies name and parameters only)
-    bool insert_artwork(const Artwork& artwork_info) {
+
+	bool insert_artwork(const Artwork& artwork_info) {
         bool has_duplicate = false;
 
         for(int entry = 0 ; entry < my_artwork.size() && !has_duplicate /* exits loop when has_duplicate */ ; entry++) {
@@ -127,6 +130,10 @@ public:
         return are_equal;
     }
 
+	vector<Artwork> get_art() {
+		return my_artwork;
+	}
+
     // external function that has direct access to private members of ArtCollection:
     friend ArtCollection operator+(const ArtCollection& lhs, const ArtCollection& rhs);
 };
@@ -162,6 +169,7 @@ class ArtCollectionTest {
     // write methods to check ArtCollection functionality
     vector<Artwork> test_values;
 
+public:
     void setup() {
         Artwork a1("Van Gogh", "Starry Night", 1750), a2("Art", "Artist", 2021);
         test_values.push_back(a1);
@@ -171,30 +179,32 @@ class ArtCollectionTest {
     void test_insert_artwork() {
         ArtCollection test_collection;
         
-        cout << (test_collection.insert_artwork(a1) ? 
+        cout << (test_collection.insert_artwork(test_values[0]) ? 
             "Test insert_artwork passed" : "Test insert_artwork failed") << endl;
-        assert(test_collection.my_artwork.size() == 1);
+        assert(test_collection.get_art.size() == 1);
         cout << "Test my_artwork.size() passed" << endl;
         
         assert(test_collection.insert_artwork(test_values[1]));
         cout << "Test 2 for my_artwork.insert_artwork() passed" << endl;
-        assert(test_collection.my_artwork.size() == 2);
+        assert(test_collection.get_art.size() == 2);
         cout << "Test 2 my_artwork.size() passed" << endl;
 
-        assert(!(test_collection.insert_artwork(a2)));
+        assert(!(test_collection.insert_artwork(test_values[2])));
         cout << "Test 3 for my_artwork.insert_artwork() passed" << endl;
-        assert(test_collection.my_artwork.size() == 2);
+        assert(test_collection.get_art.size() == 2);
         cout << "Test 3 my_artwork.size() passed" << endl;
 
     }
     
-    void run() {
-        setup();
-        test_insert_artwork();
+    void run(ArtCollectionTest newtest) {
+        newtest.setup();
+        newtest.test_insert_artwork();
         // tear_down();
     }
 };
 
 int main () {
-    run();
+
+    ArtCollectionTest newtest;
+	newtest.run(newtest);
 }
