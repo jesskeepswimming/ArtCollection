@@ -1,4 +1,3 @@
-#pragma once
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -109,6 +108,10 @@ public:
         return my_artwork;
     }
 
+    vector<SoldArtwork> get_sold_artwork() {
+        return my_sold_artwork;
+    }
+
     bool operator==(const ArtCollection& rhs) const {
         // check if any two ArtCollection objects are the same
         bool are_equal = true;
@@ -153,22 +156,13 @@ ArtCollection operator+(const ArtCollection& lhs, const ArtCollection& rhs) {
     return target;
 }
 
-/*
-// insert_artwork method definition (specifies actual code)
-bool ArtCollection::insert_artwork(const Artwork& artwork_info) {
-    // ArtCollection:: is the scope operator (what insert_artwork belongs to)
-    return true;
-}
-// sell_artwork method definition
-bool ArtCollection::sell_artwork(const SoldArtwork& artwork_info) {
-    return true;
-}
-*/
-
 // class defining test cases for ArtCollection:
 class ArtCollectionTest {
     // a test vector of artwork objects
     vector<Artwork> test_values;
+    vector<SoldArtwork> test_values_sold;
+
+    ArtCollection test_collection;
 public:
     // write methods to check ArtCollection functionality
     // create an instance of Artwork and add 2 objects to it:
@@ -176,11 +170,15 @@ public:
         Artwork a1("Van Gogh", "Starry Night", 1750), a2("Art", "Artist", 2021);
         test_values.push_back(a1);
         test_values.push_back(a2);
+
+        SoldArtwork b1("bob", "waterloo", 15.00, a1);
+        SoldArtwork b2("jess", "Toronto", 39.00, a2);
+        test_values_sold.push_back(b1);
+        test_values_sold.push_back(b2);
     }
 
     // try to insert artwork into a collection:
     void test_insert_artwork() {
-        ArtCollection test_collection;
 
         cout << (test_collection.insert_artwork(test_values[0]) ?
             "Test insert_artwork passed" : "Test insert_artwork failed") << endl;
@@ -190,18 +188,46 @@ public:
 
         assert(test_collection.insert_artwork(test_values[1]));
         cout << "Test 2 for my_artwork.insert_artwork() passed" << endl;
+        
         assert(test_collection.get_artwork().size() == 2);
         cout << "Test 2 my_artwork.size() passed" << endl;
 
         assert(!(test_collection.insert_artwork(test_values[1])));
-        cout << "Test 3 for my_artwork.insert_artwork() passed" << endl;
+        cout << "Test 3 for my_artwork.insert_artwork() passed, no duplicate inserted" << endl;
+        
         assert(test_collection.get_artwork().size() == 2);
-        cout << "Test 3 my_artwork.size() passed" << endl;
+        cout << "Test 3 my_artwork.size() passed, no size change" << endl;
+
+        assert(test_collection.insert_artwork(test_values[1]) == false);
+        cout << "Test 4 passed: duplicate art was not added \n";
     }
+
+     void test_sell_artwork() {
+        
+        cout << (test_collection.sell_artwork(test_values_sold[0]) ?
+            "Test sold_artwork passed" : "Test sold_artwork failed") << endl;
+        assert(test_collection.get_artwork().size() == 1 && test_collection.get_sold_artwork().size() == 1 && "Testing if b1 was successfully sold from my_artwork");
+        // if assertion is true:
+        cout << "Test my_artwork.size() passed" << endl;
+
+        assert(!(test_collection.sell_artwork(test_values_sold[0])));
+        cout << "Test 2 for my_artwork.insert_artwork() passed" << endl;
+        assert(test_collection.get_artwork().size() == 1 && test_collection.get_sold_artwork().size() == 1);
+        cout << "Test 2 my_artwork.size() passed, no duplicate sold/inserted" << endl;
+
+        assert(test_collection.sell_artwork(test_values_sold[1]));
+        cout << "Test 3 for my_artwork.sold_artwork() passed" << endl;
+        assert(test_collection.get_artwork().size() == 0 && test_collection.get_sold_artwork().size() == 2);
+        cout << "Test 3 my_artwork.size() passed" << endl;
+
+    }
+
 
     void run() {
         setup();
         test_insert_artwork();
+        test_sell_artwork();
+
         // tear_down();
     }
 };
