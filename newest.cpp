@@ -1,4 +1,3 @@
-#pragma once
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -10,9 +9,9 @@ using namespace std;
 
 
 // Practice Exercise 1:
-//      Group #28
-//      Kate Harvey, ID# 20829173
-//      Jessica Lui, ID# 20837325
+//    Group #28
+//    Kate Harvey, ID# 20829173
+//    Jessica Lui, ID# 20837325
 
 
 // define an artwork class:
@@ -28,7 +27,7 @@ public:
     Artwork(string new_artist, string new_title, unsigned int new_year) :
         artist_name(new_artist), title(new_title), year_made(new_year) {}
 
-    // overloaded operator ==
+    // overloaded operator==
     bool operator==(const Artwork& rhs) const {
         bool are_equal = artist_name == rhs.artist_name;
         are_equal = are_equal && title == rhs.title;
@@ -51,7 +50,7 @@ public:
         customer_name(new_customer_name), customer_address(new_customer_address), sale_amount(new_sale_amount), Artwork(new_artwork) {}
     //calling Artwork implicit constructor
 
-// overload operator
+// overloaded operator==
     bool operator==(const SoldArtwork& rhs) const {
         bool are_equal = customer_name == rhs.customer_name;
         are_equal = are_equal && customer_address == rhs.customer_address;
@@ -80,7 +79,7 @@ public:
             }
         }
         // if no duplicate is found, insert the given Artwork object into the Artwork vector:
-        if (!has_duplicate) my_artwork.push_back(artwork_info); // push_back appends an element to the end of a vector
+        if (!has_duplicate) my_artwork.push_back(artwork_info);
 
         // return true if insertion worked; else return false
         return !has_duplicate;
@@ -182,21 +181,31 @@ public:
     void test_insert_artwork() {
         ArtCollection test_collection;
 
+        // test if 
         cout << (test_collection.insert_artwork(test_values[0]) ?
             "Test insert_artwork passed" : "Test insert_artwork failed") << endl;
         assert(test_collection.get_artwork().size() == 1 && "Testing if a1 was successfully added to my_artwork");
-        // if assertion is true:
         cout << "Test my_artwork.size() passed" << endl;
 
+        // test if art a1 is added to my_artwork:
         assert(test_collection.insert_artwork(test_values[1]));
         cout << "Test 2 for my_artwork.insert_artwork() passed" << endl;
+
+        // test if size of my_artwork is correct:
         assert(test_collection.get_artwork().size() == 2);
         cout << "Test 2 my_artwork.size() passed" << endl;
-
+        
+        // test if art a2 is added to my_artwork:
         assert(!(test_collection.insert_artwork(test_values[1])));
         cout << "Test 3 for my_artwork.insert_artwork() passed" << endl;
+
+        // test if size of my_artwork is correct:
         assert(test_collection.get_artwork().size() == 2);
         cout << "Test 3 my_artwork.size() passed" << endl;
+
+        // try to add duplicate artwork:
+        assert(test_collection.insert_artwork(test_values[1]) == false);
+        cout << "Test 4 passed: duplicate art was not added \n";
     }
 
     void run() {
