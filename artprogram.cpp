@@ -170,11 +170,17 @@ class ArtCollectionTest {
     vector<Artwork> test_values;
 
 public:
-    void setup() {
+    ArtCollectionTest() {
+		Artwork a1("Van Gogh", "Starry Night", 1750), a2("Art", "Artist", 2021);
+        test_values.push_back(a1);
+        test_values.push_back(a2);
+	}
+	
+	/*void setup() {
         Artwork a1("Van Gogh", "Starry Night", 1750), a2("Art", "Artist", 2021);
         test_values.push_back(a1);
         test_values.push_back(a2);
-    }
+    }*/
 
     void test_insert_artwork() {
         ArtCollection test_collection;
@@ -196,15 +202,15 @@ public:
 
     }
     
-    void run(ArtCollectionTest newtest) {
-        newtest.setup();
-        newtest.test_insert_artwork();
+    void run() {
+        //setup();
+        test_insert_artwork();
         // tear_down();
     }
 };
 
-int main () {
 
+int main () {
     ArtCollectionTest newtest;
-	newtest.run(newtest);
+	newtest.run();
 }
